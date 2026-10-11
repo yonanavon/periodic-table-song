@@ -46,6 +46,9 @@
   .info h2{margin:0;font-size:24px}
   .info .meta{color:var(--muted);font-size:14px}
   .nav{display:flex;flex-wrap:wrap;gap:8px}
+  dialog{max-height:94vh;overflow-y:auto}
+  .desc{padding:0 18px 18px;font-size:16px;line-height:1.65;border-top:1px solid rgba(0,0,0,.1)}
+  .desc p{margin:12px 0 0}
 </style>
 </head>
 <body>
@@ -78,10 +81,12 @@
       <button id="close">סגור</button>
     </div>
   </div>
+  <div class="desc" id="dDesc"></div>
 </dialog>
 
 <audio id="audio" src="media/soundtrack.mp3" loop preload="auto"></audio>
 
+<script src="descriptions.js"></script>
 <script>
 // [symbol, Hebrew name, category]
 const E = [
@@ -207,6 +212,8 @@ function show(z){
   document.getElementById('dImg').alt=`${name} (${sym})`;
   document.getElementById('dTitle').textContent=`${name} · ${sym}`;
   document.getElementById('dMeta').textContent=`מספר אטומי ${z} · ${CAT[cat][0]}`;
+  const desc=document.getElementById('dDesc'); desc.replaceChildren();
+  (DESC[z]||'').split(/\n\n/).forEach(t=>{ const p=document.createElement('p'); p.textContent=t; desc.appendChild(p); });
   if(!dlg.open) dlg.showModal();
 }
 // Manual navigation pauses song-following, otherwise the song would immediately override it
